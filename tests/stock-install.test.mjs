@@ -45,14 +45,14 @@ test('ships the prebuilt web client without machine paths', () => {
   assert.doesNotMatch(client, /(?:^|[\s"'`=(])(?:\/(?:Users|home|opt|var|tmp|private|agent)\/|[A-Za-z]:\\)/)
 })
 
-test('peer range accepts Harness 0.2.0-rc.1 and stable 0.2.0, and rejects alphas and 0.1.7-rc.2', () => {
+test('peer range accepts Harness 0.2.0-rc.2 and stable 0.2.0, and rejects alphas and 0.1.7-rc.2', () => {
   const pkg = JSON.parse(read('package.json'))
   const peers = Object.entries(pkg.peerDependencies).filter(([name]) => name.startsWith('@deepseek-ai/dsh-'))
   assert.ok(peers.length >= 11)
   for (const [name, range] of peers) {
     assert.equal(range, '>=0.2.0-rc.1 <0.2.1', name)
-    assert.equal(pkg.devDependencies[name], '0.2.0-rc.1', name)
-    assert.equal(satisfies('0.2.0-rc.1', range), true, name)
+    assert.equal(pkg.devDependencies[name], '0.2.0-rc.2', name)
+    assert.equal(satisfies('0.2.0-rc.2', range), true, name)
     assert.equal(satisfies('0.2.0', range), true, name)
     assert.equal(satisfies('0.2.0-rc.2', range), true, name)
     assert.equal(satisfies('0.2.0-alpha', range), false, name)
@@ -66,9 +66,9 @@ test('peer range accepts Harness 0.2.0-rc.1 and stable 0.2.0, and rejects alphas
   assert.equal(pkg.version, '1.0.4')
 })
 
-test('client inline allowlist matches Harness 0.2.0-rc.1', () => {
+test('client inline allowlist matches Harness 0.2.0-rc.2', () => {
   const source = read('tsdown.config.ts')
-  assert.match(source, /dsh-v0\.2\.0-rc\.1/)
+  assert.match(source, /dsh-v0\.2\.0-rc\.2/)
   assert.match(source, /dsh-api-workspace-controller\/default-workspace/)
   assert.doesNotMatch(source, /dsh-v0\.1\.7-rc\.2/)
 })
