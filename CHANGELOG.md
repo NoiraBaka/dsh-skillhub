@@ -6,6 +6,14 @@
 - 增加“刷新 / 补全”手动入口；通过 BroadcastChannel 通知其他窗口。刷新失败时区分已保存的开关与尚未更新的补全。
 - 使用 RC2 的真实 Cordis、Loader、输入触发器和官方技能客户端构建产物，验证旧缓存复现、同会话启停、多会话隔离、重复通知合并及 SkillHub 自身热加载的监听清理。
 
+## 1.0.4
+
+### 兼容
+
+- 开发依赖钉在官方 `@deepseek-ai/dsh-*@0.2.0-rc.1`（tag `dsh-v0.2.0-rc.1`，SHA `4878cdabd87d4041bdaff61d04c966883b9fd07a`）。`@deepseek-ai/dsh-*` peer 范围改为 `>=0.2.0-rc.1 <0.2.1`，与 DSHX 0.9.2 对 `@deepseek-ai/dsh` 的范围相同。该范围接受 `0.2.0-rc.1` 与稳定版 `0.2.0`，拒绝 `0.2.0` alpha，也拒绝 `0.1.7-rc.2`。
+- 客户端内联白名单与平台模块表与该 tag 的 `packages/client/tsdown.client.ts` `INLINE_SAFE`、`packages/client/web/src/platform.ts` 一致；表达式相对 `dsh-v0.1.7-rc.2` 没有变化。
+- Cordis 仍是 `4.0.4`，Schemastery 仍是 `3.18.4`。
+
 ## 1.0.3
 
 ### 兼容

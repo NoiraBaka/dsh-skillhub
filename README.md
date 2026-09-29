@@ -6,8 +6,8 @@
 
 已包含编译产物；普通使用无需 pnpm、本地构建或 DSHX。
 
-[![GitHub Release](https://img.shields.io/badge/release-v1.0.3-blue?style=flat-square)](https://github.com/aa2246740/dsh-skillhub/releases)
-[![DeepSeek Harness](https://img.shields.io/badge/DeepSeek%20Harness-0.1.7--rc.2-4F46E5?style=flat-square)](https://github.com/deepseek-ai/deepseek-harness/tree/dsh-v0.1.7-rc.2)
+[![GitHub Release](https://img.shields.io/badge/release-v1.0.4-blue?style=flat-square)](https://github.com/aa2246740/dsh-skillhub/releases)
+[![DeepSeek Harness](https://img.shields.io/badge/DeepSeek%20Harness-0.2.0--rc.1-4F46E5?style=flat-square)](https://github.com/deepseek-ai/deepseek-harness/tree/dsh-v0.2.0-rc.2)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/aa2246740/dsh-skillhub?style=flat-square)](https://github.com/aa2246740/dsh-skillhub/stargazers)
 
@@ -46,7 +46,7 @@
 打开 **设置 → 插件 → 添加插件**，在“包名或地址”中输入：
 
 ```text
-github:aa2246740/dsh-skillhub#v1.0.3
+github:aa2246740/dsh-skillhub#v1.0.4
 ```
 
 桌面端插件管理器负责 Desktop profile 和内置包管理器。本发布已包含编译产物；普通使用不需要 clone、构建或安装 DSHX。若应用提示刷新或重新打开，请按提示完成。
@@ -54,7 +54,7 @@ github:aa2246740/dsh-skillhub#v1.0.3
 ### Web CLI
 
 ```bash
-dsh plugin --profile web add github:aa2246740/dsh-skillhub#v1.0.3
+dsh plugin --profile web add github:aa2246740/dsh-skillhub#v1.0.4
 ```
 
 这条官方 CLI 命令只写入 `web` profile，不能修改 Desktop App 的 profile。对于已经运行的 Web Host，请重新打开该 Host 一次，再刷新网页；不要用这条命令给桌面 App 安装。
@@ -93,7 +93,7 @@ dsh plugin --profile web add github:aa2246740/dsh-skillhub#v1.0.3
 ### 更新至最新版本
 
 ```bash
-dsh plugin --profile web add github:aa2246740/dsh-skillhub#v1.0.3
+dsh plugin --profile web add github:aa2246740/dsh-skillhub#v1.0.4
 ```
 
 ### 卸载插件

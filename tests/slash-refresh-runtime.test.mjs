@@ -1,14 +1,17 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import vm from 'node:vm'
-import test from 'node:test'
+import test, { after } from 'node:test'
 import { createSlashRefresh, SKILL_CLIENT } from '../src/client/slash-refresh.ts'
 
 const root = process.env.DSHX_HARNESS
 if (!root) throw new Error('Set DSHX_HARNESS to test the real desktop Loader and autocomplete')
+const { register } = await import(`${root}/node_modules/tsx/dist/esm/api/index.mjs`)
+const unregister = register({ tsconfig: false })
+after(async () => { await unregister() })
 const { Context } = await import(`${root}/vendor/cordis/lib/index.js`)
 const { default: Loader } = await import(`${root}/vendor/loader/lib/index.js`)
-const { InputTriggerService } = await import(`${root}/packages/client/ui-input-trigger/lib/types/client/service.js`)
+const { InputTriggerService } = await import(`${root}/packages/client/ui-input-trigger/src/client/service.ts`)
 const bundle = await readFile(`${root}/packages/client/ui-skill/lib/client.js`, 'utf8')
 
 function loadClient(code, surface = {}) {

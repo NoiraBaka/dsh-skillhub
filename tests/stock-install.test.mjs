@@ -4,6 +4,9 @@ import { dirname, join } from 'node:path'
 import { spawnSync } from 'node:child_process'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
+import semver from 'semver'
+
+const satisfies = (version, range) => semver.satisfies(version, range, { includePrerelease: false })
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (name) => readFileSync(join(root, name), 'utf8')
@@ -42,32 +45,40 @@ test('ships the prebuilt web client without machine paths', () => {
   assert.doesNotMatch(client, /(?:^|[\s"'`=(])(?:\/(?:Users|home|opt|var|tmp|private|agent)\/|[A-Za-z]:\\)/)
 })
 
-test('peer range accepts Harness 0.1.7-rc.2 and not 0.1.7-alpha', () => {
+test('peer range accepts Harness 0.2.0-rc.2 and stable 0.2.0, and rejects alphas and 0.1.7-rc.2', () => {
   const pkg = JSON.parse(read('package.json'))
   const peers = Object.entries(pkg.peerDependencies).filter(([name]) => name.startsWith('@deepseek-ai/dsh-'))
   assert.ok(peers.length >= 11)
   for (const [name, range] of peers) {
-    assert.equal(range, '>=0.1.7-rc.1 <0.1.8', name)
-    assert.equal(pkg.devDependencies[name], '0.1.7-rc.2', name)
+    assert.equal(range, '>=0.2.0-rc.1 <0.2.1', name)
+    assert.equal(pkg.devDependencies[name], '0.2.0-rc.2', name)
+    assert.equal(satisfies('0.2.0-rc.2', range), true, name)
+    assert.equal(satisfies('0.2.0', range), true, name)
+    assert.equal(satisfies('0.2.0-rc.2', range), true, name)
+    assert.equal(satisfies('0.2.0-alpha', range), false, name)
+    assert.equal(satisfies('0.2.0-alpha.1', range), false, name)
+    assert.equal(satisfies('0.1.7-rc.2', range), false, name)
+    assert.equal(satisfies('0.2.1', range), false, name)
   }
   assert.equal(JSON.stringify(pkg).includes('0.1.5-rc'), false)
-  assert.equal(JSON.stringify(pkg).includes('0.1.7-alpha'), false)
-  assert.equal(JSON.stringify(pkg).includes('0.1.7-rc.1'), true)
-  assert.equal(pkg.version, '1.0.3')
+  assert.equal(JSON.stringify(pkg).includes('0.1.7-rc'), false)
+  assert.equal(JSON.stringify(pkg).includes('0.2.0-alpha'), false)
+  assert.equal(pkg.version, '1.0.4')
 })
 
-test('client inline allowlist matches Harness 0.1.7-rc.2', () => {
+test('client inline allowlist matches Harness 0.2.0-rc.2', () => {
   const source = read('tsdown.config.ts')
-  assert.match(source, /dsh-v0\.1\.7-rc\.2/)
+  assert.match(source, /dsh-v0\.2\.0-rc\.2/)
   assert.match(source, /dsh-api-workspace-controller\/default-workspace/)
-  assert.doesNotMatch(source, /dsh-v0\.1\.7-rc\.1/)
+  assert.doesNotMatch(source, /dsh-v0\.1\.7-rc\.2/)
 })
 
-test('leads the README with the official one-liner', () => {
-  const lead = read('README.md').slice(0, 600)
-  assert.match(lead, /dsh plugin --profile web add github:aa2246740\/dsh-skillhub/)
-  assert.match(lead, /pnpm/)
-  assert.doesNotMatch(lead, /dshx|my-plugins|DSHX|activate-new-client/)
+test('documents the official web install one-liner', () => {
+  const readme = read('README.md')
+  const lead = readme.slice(0, 600)
+  assert.match(readme, /dsh plugin --profile web add github:aa2246740\/dsh-skillhub#v1\.0\.4/)
+  assert.match(lead, /无需 pnpm、本地构建或 DSHX/)
+  assert.doesNotMatch(readme, /dshx plugin|my-plugins|activate-new-client/)
 })
 
 test('pnpm pack stages the stock bundle files', () => {
